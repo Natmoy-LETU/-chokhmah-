@@ -1,98 +1,85 @@
 import 'package:flutter/material.dart';
 import 'task.dart';
 
+class TaskFrame extends StatefulWidget {
+  const TaskFrame({Key? key}) : super(key: key);
 
-class TaskFrame extends StatelessWidget {
-  const TaskFrame({Key? key, required Task task}) : super(key: key);
+  @override
+  _TaskFrameState createState() => _TaskFrameState();
+}
+
+class _TaskFrameState extends State<TaskFrame> {
+  List<List<Widget>> columns = [
+    [
+      const SizedBox(height: 20.0),
+      Text('Column 1'),
+      const SizedBox(height: 20.0),
+    ],
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        
-        actions: <Widget>[
-          IconButton(
-            icon: const Icon(Icons.settings),
-            tooltip: 'Settings',
-            
-            onPressed: () {
-              Navigator.pushNamed(context, '/settings');
-             }
+        title: const Text('Task Frame'),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ElevatedButton(
+              onPressed: () {
+                // Add a new column
+                setState(() {
+                  columns.add(
+                    buildColumn(columns.length + 1),
+                  );
+                });
+              },
+              child: const Text('Add Column'),
             ),
-          IconButton(
-            icon: const Icon(Icons.more_vert),
-            tooltip: 'Methods',
-            
-            onPressed: () {
-              Navigator.pushNamed(context, '/method');
-             }
-            )
-          ]
-        ),     
-      //padding: const EdgeInsets.all(20.0), // Adding padding
-      body: Column(
-        children: [
-          
-          ElevatedButton(
-            onPressed: () {
-              // Navigate to the Task screen
-              Navigator.pushNamed(context, '/task');
-            },
-            child: const Text('Create Task'), // Button to create a task instance
-          ),
-          
-          Row(
-            children: [
-              // Container for Drag Targets with Vertical Dividers
-              Container(
-                color: Colors.grey[200],
-                child: Column(
-                  children: [
-                    DragTarget<String>(
-                      builder: (BuildContext context, List<String?> candidateData,
-                          List<dynamic> rejectedData) {
-                        return Container(
-                          height: 200.0,
-                          width: 200.0,
-                          alignment: Alignment.center,
-                          color: candidateData.isEmpty
-                              ? Colors.grey[300]
-                              : Colors.greenAccent,
-                          child: const Text('Drop here'),
-                        );
-                      },
-                      onAccept: (String data) {
-                        // Handle the dropped data
-                      },
-                    ),
-                    Divider(
-                      thickness: 1.0,
-                      height: 20.0,
-                    ),
-                    DragTarget<String>(
-                      builder: (BuildContext context, List<String?> candidateData,
-                          List<dynamic> rejectedData) {
-                        return Container(
-                          height: 200.0,
-                          width: 200.0,
-                          alignment: Alignment.center,
-                          color: candidateData.isEmpty
-                              ? Colors.grey[300]
-                              : Colors.greenAccent,
-                          child: const Text('Drop here'),
-                        );
-                      },
-                      onAccept: (String data) {
-                        // Handle the dropped data
-                      },
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ]
-      )
+            const SizedBox(height: 20.0),
+            Row(
+              children: columns
+                  .map((column) => Expanded(
+                        child: Column(
+                          children: column,
+                        ),
+                      ))
+                  .toList(),
+            ),
+          ],
+        ),
+      ),
     );
+  }
+
+  List<Widget> buildColumn(int index) {
+    return [
+      const SizedBox(height: 20.0),
+      Text('Column $index'),
+      const SizedBox(height: 20.0),
+      ElevatedButton(
+        onPressed: () {
+          // Add a new task
+          setState(() {
+            columns[index - 1].add(
+              const Task(),
+            );
+          });
+        },
+        child: const Text('Add Task'),
+      ),
+      ElevatedButton(
+        onPressed: () {
+          // Remove the last task
+          setState(() {
+            columns[index - 1].removeLast();
+          });
+        },
+        child: const Text('Remove Task'),
+      ),
+    ];
   }
 }
