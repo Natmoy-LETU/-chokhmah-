@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(const Task());
-}
-
 class Task extends StatelessWidget {
   const Task({super.key});
 

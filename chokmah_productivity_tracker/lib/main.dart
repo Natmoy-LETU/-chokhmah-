@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 
+// Import necessary program files
+import 'package:chokmah_productivity_tracker/settings_frame.dart';
+import 'package:chokmah_productivity_tracker/task.dart';
+
 void main() {
   runApp(const MyApp());
 }
