@@ -1,154 +1,89 @@
 import 'package:flutter/material.dart';
 
-class Task extends StatelessWidget {
+class Task extends StatefulWidget {
   const Task({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Draggable & Expandable Widget'),
-        ),
-        body: const DraggableExpandableWidget(),
-      ),
-    );
-  }
+  _TaskState createState() => _TaskState();
 }
 
-class DraggableExpandableWidget extends StatefulWidget {
-  const DraggableExpandableWidget({Key? key}) : super(key: key);
-
-  @override
-  _DraggableExpandableWidgetState createState() => _DraggableExpandableWidgetState();
-}
-
-class _DraggableExpandableWidgetState extends State<DraggableExpandableWidget> {
+class _TaskState extends State<Task> {
   bool isExpanded = false;
-  List<bool> isDragOverTargets = List.generate(2, (_) => false); // Initialize with 2 drag targets
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        // Drag targets
-        Positioned(
-          top: 100,
-          left: 50,
-          child: DragTarget<String>(
-            onWillAccept: (data) {
-              setState(() {
-                isDragOverTargets[0] = true;
-              });
-              return true;
-            },
-            onLeave: (data) {
-              setState(() {
-                isDragOverTargets[0] = false;
-              });
-            },
-            onAccept: (data) {
-              setState(() {
-                isDragOverTargets[0] = false;
-                // Handle when an item is dropped onto this target
-              });
-            },
-            builder: (context, candidateData, rejectedData) {
-              return Container(
-                width: 200,
-                height: 100,
-                color: isDragOverTargets[0] ? Colors.green : Colors.transparent,
-              );
-            },
+    return LongPressDraggable<String>(
+      data: 'draggable_widget',
+      feedback: Material(
+        elevation: 4.0,
+        child: Container(
+          color: Colors.blue.withOpacity(0.5),
+          height: isExpanded ? 200.0 : 100.0,
+          width: double.infinity,
+          child: Center(
+            child: isExpanded
+                ? const Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Divider(),
+                      Text('Additional Content'),
+                      Divider(),
+                      Text('Additional Content'),
+                      Divider(),
+                    ],
+                  )
+                : Container(),
           ),
         ),
-        Positioned(
-          top: 300,
-          left: 50,
-          child: DragTarget<String>(
-            onWillAccept: (data) {
-              setState(() {
-                isDragOverTargets[1] = true;
-              });
-              return true;
-            },
-            onLeave: (data) {
-              setState(() {
-                isDragOverTargets[1] = false;
-              });
-            },
-            onAcceptWithDetails: (data) {
-              setState(() {
-                isDragOverTargets[1] = false;
-                // Handle when an item is dropped onto this target
-              });
-            },
-            builder: (context, candidateData, rejectedData) {
-              return Container(
-                width: 200,
-                height: 100,
-                color: isDragOverTargets[1] ? Colors.green : Colors.transparent,
-              );
-            },
-          ),
-        ),
-        // Draggable item
-        Draggable<String>(
-          data: 'draggable_widget',
-          feedback: Material(
-            elevation: 4.0,
-            child: Container(
-              color: Colors.blue.withOpacity(0.5),
-              height: isExpanded ? 200.0 : 100.0,
-              width: 200.0,
-              child: Center(
-                child: isExpanded
-                    ? const Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Divider(),
-                          Text('Additional Content'),
-                          Divider(),
-                          Text('Additional Content'),
-                          Divider(),
-                        ],
-                      )
-                    : Container(),
-              ),
-            ),
-          ),
-          childWhenDragging: Container(),
-          child: Material(
-            elevation: 4.0,
-            child: Container(
-              color: Colors.blue,
-              height: isExpanded ? 200.0 : 100.0,
-              width: 200.0,
-              child: Center(
-                child: isExpanded
-                    ? const Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Divider(),
-                          Text('Additional Content'),
-                          Divider(),
-                          Text('Additional Content'),
-                          Divider(),
-                        ],
-                      )
-                    : IconButton(
-                        icon: const Icon(Icons.arrow_drop_down),
-                        onPressed: () {
-                          setState(() {
-                            isExpanded = !isExpanded;
-                          });
-                        },
+      ),
+      childWhenDragging: Container(),
+      child: DragTarget<String>(
+        builder: (context, candidateData, rejectedData) {
+          return LayoutBuilder(
+            builder: (context, constraints) {
+              return Material(
+                elevation: 4.0,
+                child: SizedBox(
+                  width: constraints.maxWidth,
+                  height: isExpanded ? constraints.maxWidth : constraints.maxWidth / 2, // Maintain aspect ratio
+                  child: InkWell(
+                    onTap: () {
+                      setState(() {
+                        isExpanded = !isExpanded;
+                      });
+                    },
+                    child: Container(
+                      color: Colors.blue,
+                      child: Center(
+                        child: IconButton(
+                          icon: Icon(
+                            isExpanded ? Icons.arrow_drop_up : Icons.arrow_drop_down,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              isExpanded = !isExpanded;
+                            });
+                          },
+                        ),
                       ),
-              ),
-            ),
-          ),
-        ),
-      ],
+                    ),
+                  ),
+                ),
+              );
+            },
+          );
+        },
+        onWillAccept: (data) {
+          // Implement your onWillAccept logic
+          return true;
+        },
+        onLeave: (data) {
+          // Implement your onLeave logic
+        },
+        onAccept: (data) {
+          // Implement your onAccept logic
+        },
+      ),
     );
   }
 }
