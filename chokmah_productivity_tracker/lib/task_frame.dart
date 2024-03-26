@@ -1,15 +1,38 @@
 import 'package:flutter/material.dart';
 import 'task.dart';
 
+
 class TaskFrame extends StatelessWidget {
   const TaskFrame({Key? key, required Task task}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(20.0), // Adding padding
-      child: Column(
+    return Scaffold(
+      appBar: AppBar(
+        
+        actions: <Widget>[
+          IconButton(
+            icon: const Icon(Icons.settings),
+            tooltip: 'Settings',
+            
+            onPressed: () {
+              Navigator.pushNamed(context, '/settings');
+             }
+            ),
+          IconButton(
+            icon: const Icon(Icons.more_vert),
+            tooltip: 'Methods',
+            
+            onPressed: () {
+              Navigator.pushNamed(context, '/method');
+             }
+            )
+          ]
+        ),     
+      //padding: const EdgeInsets.all(20.0), // Adding padding
+      body: Column(
         children: [
+          
           ElevatedButton(
             onPressed: () {
               // Navigate to the Task screen
@@ -17,7 +40,7 @@ class TaskFrame extends StatelessWidget {
             },
             child: const Text('Create Task'), // Button to create a task instance
           ),
-      
+          
           Row(
             children: [
               // Container for Drag Targets with Vertical Dividers
@@ -65,7 +88,7 @@ class TaskFrame extends StatelessWidget {
                     ),
                   ],
                 ),
-              ), 
+              ),
             ],
           ),
         ]

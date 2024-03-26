@@ -1,3 +1,4 @@
+import 'package:chokmah_productivity_tracker/method_changer.dart';
 import 'package:flutter/material.dart';
 
 // Import necessary program files
@@ -37,9 +38,9 @@ class Chokmah extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => const MainMenu(title: 'Start Page'),
-        '/settings': (context) => SettingsFrame(),
+        '/settings': (context) => Settings(title: 'Settings',),
         '/task_frame': (context) => TaskFrame(task: Task()),
-        '/task': (context) => Task(),
+        '/method':(context) => MethodMenu(title: 'Methods'),
       },
     );
   }
@@ -54,23 +55,38 @@ class MainMenu extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(title),
-      ),
+        actions: <Widget>[
+          IconButton(
+            icon: const Icon(Icons.settings),
+            tooltip: 'Settings',
+            
+            onPressed: () {
+              Navigator.pushNamed(context, '/settings');
+             }
+            ),
+          IconButton(
+            icon: const Icon(Icons.more_vert),
+            tooltip: 'Methods',
+            
+            onPressed: () {
+              Navigator.pushNamed(context, '/method');
+             }
+            )
+          ]
+        ),                  
+      
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pushNamed(context, '/settings');
-              },
-              child: const Text('Go to Settings'),
-            ),
+            
             ElevatedButton(
               onPressed: () {
                 Navigator.pushNamed(context, '/task_frame');
               },
               child: const Text('Go to TaskFrame Screen'),
             ),
+            
           ],
         ),
       ),
