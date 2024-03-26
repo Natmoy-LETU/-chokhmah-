@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class Task extends StatelessWidget {
-  const Task({super.key});
+  const Task({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -17,18 +17,15 @@ class Task extends StatelessWidget {
 }
 
 class DraggableExpandableWidget extends StatefulWidget {
-  const DraggableExpandableWidget({super.key});
+  const DraggableExpandableWidget({Key? key}) : super(key: key);
 
   @override
-  // ignore: library_private_types_in_public_api
-  _DraggableExpandableWidgetState createState() =>
-      _DraggableExpandableWidgetState();
+  _DraggableExpandableWidgetState createState() => _DraggableExpandableWidgetState();
 }
 
 class _DraggableExpandableWidgetState extends State<DraggableExpandableWidget> {
   bool isExpanded = false;
-  bool isDragOverTarget1 = false;
-  bool isDragOverTarget2 = false;
+  List<bool> isDragOverTargets = List.generate(2, (_) => false); // Initialize with 2 drag targets
 
   @override
   Widget build(BuildContext context) {
@@ -41,18 +38,18 @@ class _DraggableExpandableWidgetState extends State<DraggableExpandableWidget> {
           child: DragTarget<String>(
             onWillAccept: (data) {
               setState(() {
-                isDragOverTarget1 = true;
+                isDragOverTargets[0] = true;
               });
               return true;
             },
             onLeave: (data) {
               setState(() {
-                isDragOverTarget1 = false;
+                isDragOverTargets[0] = false;
               });
             },
             onAccept: (data) {
               setState(() {
-                isDragOverTarget1 = false;
+                isDragOverTargets[0] = false;
                 // Handle when an item is dropped onto this target
               });
             },
@@ -60,7 +57,7 @@ class _DraggableExpandableWidgetState extends State<DraggableExpandableWidget> {
               return Container(
                 width: 200,
                 height: 100,
-                color: isDragOverTarget1 ? Colors.green : Colors.transparent,
+                color: isDragOverTargets[0] ? Colors.green : Colors.transparent,
               );
             },
           ),
@@ -71,18 +68,18 @@ class _DraggableExpandableWidgetState extends State<DraggableExpandableWidget> {
           child: DragTarget<String>(
             onWillAccept: (data) {
               setState(() {
-                isDragOverTarget2 = true;
+                isDragOverTargets[1] = true;
               });
               return true;
             },
             onLeave: (data) {
               setState(() {
-                isDragOverTarget2 = false;
+                isDragOverTargets[1] = false;
               });
             },
             onAcceptWithDetails: (data) {
               setState(() {
-                isDragOverTarget2 = false;
+                isDragOverTargets[1] = false;
                 // Handle when an item is dropped onto this target
               });
             },
@@ -90,68 +87,68 @@ class _DraggableExpandableWidgetState extends State<DraggableExpandableWidget> {
               return Container(
                 width: 200,
                 height: 100,
-                color: isDragOverTarget2 ? Colors.green : Colors.transparent,
+                color: isDragOverTargets[1] ? Colors.green : Colors.transparent,
               );
             },
           ),
         ),
         // Draggable item
-    Draggable<String>(
-      data: 'draggable_widget',
-      feedback: Material(
-        elevation: 4.0,
-        child: Container(
-          color: Colors.blue.withOpacity(0.5),
-          height: isExpanded ? 200.0 : 100.0,
-          width: 200.0,
-          child: Center(
-            child: isExpanded
-                ? const Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Divider(),
-                      Text('Additional Content'),
-                      Divider(),
-                      Text('Additional Content'),
-                      Divider(),
-                    ],
-                  )
-                : Container(),
+        Draggable<String>(
+          data: 'draggable_widget',
+          feedback: Material(
+            elevation: 4.0,
+            child: Container(
+              color: Colors.blue.withOpacity(0.5),
+              height: isExpanded ? 200.0 : 100.0,
+              width: 200.0,
+              child: Center(
+                child: isExpanded
+                    ? const Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Divider(),
+                          Text('Additional Content'),
+                          Divider(),
+                          Text('Additional Content'),
+                          Divider(),
+                        ],
+                      )
+                    : Container(),
+              ),
+            ),
           ),
-        ),
-      ),
-      childWhenDragging: Container(),
-      child: Material(
-        elevation: 4.0,
-        child: Container(
-          color: Colors.blue,
-          height: isExpanded ? 200.0 : 100.0,
-          width: 200.0,
-          child: Center(
-            child: isExpanded
-                ? const Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Divider(),
-                      Text('Additional Content'),
-                      Divider(),
-                      Text('Additional Content'),
-                      Divider(),
-                    ],
-                  )
-                : IconButton(
-                    icon: const Icon(Icons.arrow_drop_down),
-                    onPressed: () {
-                      setState(() {
-                        isExpanded = !isExpanded;
-                      });
-                    },
-                  ),
+          childWhenDragging: Container(),
+          child: Material(
+            elevation: 4.0,
+            child: Container(
+              color: Colors.blue,
+              height: isExpanded ? 200.0 : 100.0,
+              width: 200.0,
+              child: Center(
+                child: isExpanded
+                    ? const Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Divider(),
+                          Text('Additional Content'),
+                          Divider(),
+                          Text('Additional Content'),
+                          Divider(),
+                        ],
+                      )
+                    : IconButton(
+                        icon: const Icon(Icons.arrow_drop_down),
+                        onPressed: () {
+                          setState(() {
+                            isExpanded = !isExpanded;
+                          });
+                        },
+                      ),
+              ),
             ),
           ),
         ),
-      )
-      ]
-      );
+      ],
+    );
   }
 }
