@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'task.dart';
 
 class TaskFrame extends StatefulWidget {
-  const TaskFrame({Key? key}) : super(key: key);
+  const TaskFrame({Key? key, required Task task}) : super(key: key);
 
   @override
   _TaskFrameState createState() => _TaskFrameState();
@@ -21,8 +21,26 @@ class _TaskFrameState extends State<TaskFrame> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Task Frame'),
-      ),
+        actions: <Widget>[
+          IconButton(
+            icon: const Icon(Icons.settings),
+            tooltip: 'Settings',
+            
+            onPressed: () {
+              Navigator.pushNamed(context, '/settings');
+             }
+            ),
+          IconButton(
+            icon: const Icon(Icons.more_vert),
+            tooltip: 'Methods',
+            
+            onPressed: () {
+              Navigator.pushNamed(context, '/method');
+             }
+            )
+          ]
+        ),     
+      
       body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Column(

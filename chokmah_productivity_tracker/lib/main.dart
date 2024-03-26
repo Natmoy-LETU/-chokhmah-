@@ -38,7 +38,7 @@ class Chokmah extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => const MainMenu(title: 'Start Page'),
-        '/settings': (context) => SettingsFrame(),
+        '/settings': (context) => Settings(title: 'Settings',),
         '/task_frame': (context) => TaskFrame(task: Task()),
         '/task': (context) => Task(),
         '/method':(context) => MethodMenu(title: 'Methods'),
