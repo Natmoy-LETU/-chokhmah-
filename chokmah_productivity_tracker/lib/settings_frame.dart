@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
-class MainApp extends StatefulWidget {
-  const MainApp({super.key});
+class SettingsFrame extends StatefulWidget {
+  const SettingsFrame({super.key});
 
   @override
-  State<MainApp> createState() => _MainApp();
+  State<SettingsFrame> createState() => _SettingsFrame();
 }
   
 
-class _MainApp extends State<MainApp>{
+class _SettingsFrame extends State<SettingsFrame>{
 String dropDownValue = 'Method 1';
 
   @override
