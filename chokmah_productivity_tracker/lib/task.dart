@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
 
+// Enum to represent different states of the widget
+enum WidgetState {
+  Expanded,
+  Collapsed,
+}
+
 class Task extends StatefulWidget {
   const Task({Key? key}) : super(key: key);
 
@@ -8,31 +14,39 @@ class Task extends StatefulWidget {
 }
 
 class _TaskState extends State<Task> {
-  bool isExpanded = false;
+  WidgetState widgetState = WidgetState.Collapsed;
+  List<Widget> collapsedWidgets = [
+    Placeholder(),
+    Placeholder(),
+  ];
+  List<Widget> expandedWidgets = [
+    Placeholder(),
+    Placeholder(),
+    Placeholder(),
+    Placeholder(),
+    Placeholder(),
+    Placeholder(),
+    Placeholder(),
+  ];
 
   @override
   Widget build(BuildContext context) {
+    List<Widget> currentWidgets =
+        widgetState == WidgetState.Collapsed ? collapsedWidgets : expandedWidgets;
+
     return LongPressDraggable<String>(
       data: 'draggable_widget',
       feedback: Material(
         elevation: 4.0,
         child: Container(
           color: Colors.blue.withOpacity(0.5),
-          height: isExpanded ? 200.0 : 100.0,
+          height: widgetState == WidgetState.Expanded ? 200.0 : 100.0,
           width: double.infinity,
           child: Center(
-            child: isExpanded
-                ? const Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Divider(),
-                      Text('Additional Content'),
-                      Divider(),
-                      Text('Additional Content'),
-                      Divider(),
-                    ],
-                  )
-                : Container(),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: currentWidgets,
+            ),
           ),
         ),
       ),
@@ -45,11 +59,14 @@ class _TaskState extends State<Task> {
                 elevation: 4.0,
                 child: SizedBox(
                   width: constraints.maxWidth,
-                  height: isExpanded ? constraints.maxWidth : constraints.maxWidth / 2, // Maintain aspect ratio
+                  height: widgetState == WidgetState.Expanded
+                      ? constraints.maxWidth
+                      : constraints.maxWidth / 2, // Maintain aspect ratio
                   child: InkWell(
                     onTap: () {
                       setState(() {
-                        isExpanded = !isExpanded;
+                        widgetState =
+                            widgetState == WidgetState.Collapsed ? WidgetState.Expanded : WidgetState.Collapsed;
                       });
                     },
                     child: Container(
@@ -57,11 +74,12 @@ class _TaskState extends State<Task> {
                       child: Center(
                         child: IconButton(
                           icon: Icon(
-                            isExpanded ? Icons.arrow_drop_up : Icons.arrow_drop_down,
+                            widgetState == WidgetState.Expanded ? Icons.arrow_drop_up : Icons.arrow_drop_down,
                           ),
                           onPressed: () {
                             setState(() {
-                              isExpanded = !isExpanded;
+                              widgetState =
+                                  widgetState == WidgetState.Collapsed ? WidgetState.Expanded : WidgetState.Collapsed;
                             });
                           },
                         ),
