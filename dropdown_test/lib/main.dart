@@ -45,11 +45,10 @@ Widget build(BuildContext context) {
 	appBar: AppBar( 
 		title: const Text("chokhmah"), 
 	), 
-	body: Positioned( 
+	//body: Center( 
     
-      height: 0,
-      right: 25,
-		child: Column( 
+      
+		body: Column( 
 		//mainAxisAlignment: MainAxisAlignment.center, 
 		children: [ 
 			DropdownButton( 
@@ -77,7 +76,7 @@ Widget build(BuildContext context) {
 			), 
 		], 
 		), 
-    ),
-	); 
+    );
+ 
 } 
 } 
