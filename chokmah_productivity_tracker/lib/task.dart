@@ -27,10 +27,76 @@ class DraggableExpandableWidget extends StatefulWidget {
 
 class _DraggableExpandableWidgetState extends State<DraggableExpandableWidget> {
   bool isExpanded = false;
+  bool isDragOverTarget1 = false;
+  bool isDragOverTarget2 = false;
 
   @override
   Widget build(BuildContext context) {
-    return Draggable<String>(
+    return Stack(
+      children: [
+        // Drag targets
+        Positioned(
+          top: 100,
+          left: 50,
+          child: DragTarget<String>(
+            onWillAccept: (data) {
+              setState(() {
+                isDragOverTarget1 = true;
+              });
+              return true;
+            },
+            onLeave: (data) {
+              setState(() {
+                isDragOverTarget1 = false;
+              });
+            },
+            onAccept: (data) {
+              setState(() {
+                isDragOverTarget1 = false;
+                // Handle when an item is dropped onto this target
+              });
+            },
+            builder: (context, candidateData, rejectedData) {
+              return Container(
+                width: 200,
+                height: 100,
+                color: isDragOverTarget1 ? Colors.green : Colors.transparent,
+              );
+            },
+          ),
+        ),
+        Positioned(
+          top: 300,
+          left: 50,
+          child: DragTarget<String>(
+            onWillAccept: (data) {
+              setState(() {
+                isDragOverTarget2 = true;
+              });
+              return true;
+            },
+            onLeave: (data) {
+              setState(() {
+                isDragOverTarget2 = false;
+              });
+            },
+            onAcceptWithDetails: (data) {
+              setState(() {
+                isDragOverTarget2 = false;
+                // Handle when an item is dropped onto this target
+              });
+            },
+            builder: (context, candidateData, rejectedData) {
+              return Container(
+                width: 200,
+                height: 100,
+                color: isDragOverTarget2 ? Colors.green : Colors.transparent,
+              );
+            },
+          ),
+        ),
+        // Draggable item
+    Draggable<String>(
       data: 'draggable_widget',
       feedback: Material(
         elevation: 4.0,
@@ -81,9 +147,11 @@ class _DraggableExpandableWidgetState extends State<DraggableExpandableWidget> {
                       });
                     },
                   ),
+            ),
           ),
         ),
-      ),
-    );
+      )
+      ]
+      );
   }
 }
