@@ -39,6 +39,16 @@ class _TaskFrameState extends State<TaskFrame> {
               },
               child: const Text('Add Column'),
             ),
+            ElevatedButton(onPressed: (){
+              //remove last column
+              setState(() {
+                if(columns.isNotEmpty){
+                 columns.removeLast();
+                }
+              });
+            },
+            child: const Text('Remove Column')
+            ),
             const SizedBox(height: 20.0),
             Row(
               children: columns
@@ -64,7 +74,7 @@ class _TaskFrameState extends State<TaskFrame> {
         onPressed: () {
           // Add a new task
           setState(() {
-            columns[index - 1].add(
+            columns[index-1].add(
               const Task(),
             );
           });
@@ -75,7 +85,9 @@ class _TaskFrameState extends State<TaskFrame> {
         onPressed: () {
           // Remove the last task
           setState(() {
-            columns[index - 1].removeLast();
+              if(columns[index - 1].length > 5){
+                columns[index - 1].removeLast();
+              }
           });
         },
         child: const Text('Remove Task'),
