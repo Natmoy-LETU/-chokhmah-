@@ -25,7 +25,8 @@ class _TaskFrameState extends State<TaskFrame> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
-        child: Column(
+        child: SingleChildScrollView(
+          child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ElevatedButton(
@@ -43,23 +44,24 @@ class _TaskFrameState extends State<TaskFrame> {
               //remove last column
               setState(() {
                 if(columns.isNotEmpty){
-                 columns.removeLast();
-                }
+                    columns.removeLast();
+                  }
               });
             },
-            child: const Text('Remove Column')
-            ),
-            const SizedBox(height: 20.0),
-            Row(
-              children: columns
+              child: const Text('Remove Column')
+              ),
+              const SizedBox(height: 20.0),
+              Row(
+                children: columns
                   .map((column) => Expanded(
                         child: Column(
                           children: column,
                         ),
                       ))
                   .toList(),
-            ),
-          ],
+              ),
+            ], //end of children
+          ),
         ),
       ),
     );
