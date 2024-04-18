@@ -43,7 +43,8 @@ class _TaskFrameState extends State<TaskFrame> {
       
       body: Padding(
         padding: const EdgeInsets.all(20.0),
-        child: Column(
+        child: SingleChildScrollView(
+          child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ElevatedButton(
@@ -57,17 +58,28 @@ class _TaskFrameState extends State<TaskFrame> {
               },
               child: const Text('Add Column'),
             ),
-            const SizedBox(height: 20.0),
-            Row(
-              children: columns
+            ElevatedButton(onPressed: (){
+              //remove last column
+              setState(() {
+                if(columns.isNotEmpty){
+                    columns.removeLast();
+                  }
+              });
+            },
+              child: const Text('Remove Column')
+              ),
+              const SizedBox(height: 20.0),
+              Row(
+                children: columns
                   .map((column) => Expanded(
                         child: Column(
                           children: column,
                         ),
                       ))
                   .toList(),
-            ),
-          ],
+              ),
+            ], //end of children
+          ),
         ),
       ),
     );
@@ -82,7 +94,7 @@ class _TaskFrameState extends State<TaskFrame> {
         onPressed: () {
           // Add a new task
           setState(() {
-            columns[index - 1].add(
+            columns[index-1].add(
               const Task(),
             );
           });
@@ -93,7 +105,9 @@ class _TaskFrameState extends State<TaskFrame> {
         onPressed: () {
           // Remove the last task
           setState(() {
-            columns[index - 1].removeLast();
+              if(columns[index - 1].length > 5){
+                columns[index - 1].removeLast();
+              }
           });
         },
         child: const Text('Remove Task'),
