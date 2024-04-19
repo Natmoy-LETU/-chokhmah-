@@ -52,6 +52,7 @@ class _TaskFrameState extends State<TaskFrame> {
               ),
               const SizedBox(height: 20.0),
               Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: columns
                   .map((column) => Expanded(
                         child: Column(
@@ -67,6 +68,12 @@ class _TaskFrameState extends State<TaskFrame> {
     );
   }
 
+// tentative code for modularity, to be inserted into above function
+// Widget build2(BuildContext context, something method) {
+//   return Scaffold(
+//     appBar: AppBar,
+//   )
+// }
   List<Widget> buildColumn(int index) {
     return [
       const SizedBox(height: 20.0),
