@@ -39,8 +39,8 @@ class Chokmah extends StatelessWidget {
       routes: {
         '/': (context) => const MainMenu(title: 'Start Page'),
         '/settings': (context) => const Settings(title: '',),
-        '/task_frame': (context) => TaskFrame(),
-        '/task': (context) => Task(),
+        '/task_frame': (context) => const TaskFrame(task:DummyTask()),
+        '/task': (context) => const Task(),
         '/method':(context) => MethodMenu(title: 'Methods'),
 
       },
@@ -84,7 +84,10 @@ class MainMenu extends StatelessWidget {
             
             ElevatedButton(
               onPressed: () {
-                Navigator.pushNamed(context, '/task_frame');
+                Navigator.pushNamed(
+                  context, 
+                  '/task_frame',
+                  );
               },
               child: const Text('Go to TaskFrame Screen'),
             ),
